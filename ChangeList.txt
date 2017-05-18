@@ -1,0 +1,31 @@
+
+Version 1.01
+
+Changes: 
+1. Instr() now ignores case.
+2. Changed logical TRUE to -1 instead of 1.
+3. Changed NOT, AND and OR from logical operators to bitwise.  The manual says they are logical, but they are 
+   actually bitwise operators. 
+4. Added command LINE INPUT.
+5. Added DEFtypes commands DEFDBL, DEFINT, DEFSNG, DEFSTR.  Note doubles are supported and singles.
+6. Corrected the operation of INT() function.
+7. Added functions CINT() and FIX()
+8. Added function EXTKEY which returns flags showing current status of control keys.  The bit fields are:
+   [MSB] R-WIN L-WIN R-ALT L-ALT R-CTRL L-CTRL R-SHIFT L-SHIFT [LSB]
+9. Created TRS-8051-Syntax.TXT which defines the set of syntax rules used by the interpreter.
+10. Added TIMER function which returns the number of milliseconds since the program started.
+11. Added TIME$ function which returns a string with time and date.  Due to hardware restrictions, the date 
+    doesn't really work and time time is the time since the program started.  This is not in the Level 2
+    documentation but works in the actual program.
+
+Todo:
+1. Add block IF statements.  These will be identified by using BEGIN instead of THEN in IF statements. ELSE can be
+   on a separate line.  Block terminates with the ENDIF command.  Nested IF-BLOCKs allowed.
+2. Fix bug where ELSE is immediately preceeded by a digit, the tokenizer interprets it as an exponentiated float 
+   followed by a variable named 'LSE'.
+3. Get package compilable in Keil C51.
+4. Change tokenizing syntax rules to require a space after a keyword.  This eliminates keyword-variable collision 
+   problems.
+5. Change EDIT command to operate as a full screen editor rather than a line editor.
+6. Change LIST command to prompt user "<Press space for more, ESC to stop>".
+7. Support '&H' style hex constants.

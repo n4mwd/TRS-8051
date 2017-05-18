@@ -1,0 +1,15 @@
+
+This project currently only compiles with the Borland C++ v5.01 compiler.  It is available free from the Borland 
+museum and from numerous other places online.  The IDE file (the integrated make file) is included here as well as
+a regular MAK file if you want to try porting it to a different compiler.
+
+If compiling with a different compiler, just compile all the C files and link them.  There are no special libraries 
+that are used other than the standard C Runtime Library.
+
+The current target is a WIN32 executable.  However, the goal is to get it to run on an 8051 processor using the 
+Keil C51 compiler.
+
+The Win32 version contains a hardware abstraction layer of code that attempts to simulate the 8051 hardware.  This 
+code will be automatically excluded from the 8051 version.
+
+

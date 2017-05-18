@@ -1,0 +1,315 @@
+"Name"    = 'TRS-51 8051 LEVEL 2 BASIC'
+"Author"  = 'Dennis Hawkins'
+"Version" = '1.0'
+"About"   = 'This is a custom 8051 BASIC that mimic's TRS-80 LEVEL II BASIC.'
+Legend:
+'*' - zero or more repititions. 
+'+' - one or more repititions. 
+"<>" required inclusion.  
+"{}" optional inclusion.  
+'|' one or the other.  
+'e' empty set.
+'-' Range
+Nothing is case sensitive.
+
+
+; ----------------- ATOMIC DEFINITIONS
+
+
+NewLine            ::= CR {LF}
+ 
+Whitespace         ::= <' ' | TAB>
+
+Digit              ::= <'0' - '9'>
+
+Digits             ::= <Digit> {Digit}*
+
+Alpha              ::= <'A' - 'Z'> 
+                     | <'a' - 'z'>
+
+AlphaNumeric       ::= <Alpha> | <Digit>
+
+Punctuation        ::= '!' | '"' | '#' | '$' | '%' | '&' | ''' | '(' 
+                     | ')' | '*' | '+' | ',' | '-' | '.' | '/' | ':'  
+                     | ';' | '<' | '=' | '>' | '?' | '@' | '[' | '\' 
+                     | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' 
+ 
+Printable          ::= <AlphaNumeric> | <Punctuation> | <WhiteSpace>
+
+String-Chars       ::= <Printable>
+
+
+
+;  PROGRAM LINE DEFINITIONS
+
+Line               ::= <Line-Num> <Statements> <newline>
+
+Lines              ::= <Lines> <Line>
+                     | <Line>
+
+Line-Num           ::= <Integer>
+                               
+Line-Range         ::= <Line-Num> 
+                     | <Line-Num> '-'
+                     | '-' <Line-Num>
+                     | <Line-Num> '-' <Line-Num> 
+
+Line-Expr          ::= <Line-Num>
+                     | <Num-Expr>
+
+Statements         ::= <Statement> {':' <Statement>}*
+
+Statement          ::= <Console-Commands>
+                     | <IO-Statements>
+                     | <Program-Stmts>
+                     | <Sequencing-Stmts>
+                     | <Graphics-Stmts>
+                     | <System-Stmts>
+
+Console-Commands   ::= 'AUTO' {<Line-Num> {, <uint>}}
+                     | 'CLEAR'
+                     | 'CONT'
+                     | 'DELETE' <Line-Range>
+                     | 'EDIT' <Line-Num>
+                     | 'LIST' {Line-Range}
+                     | 'NEW'
+                     | 'RENUM' {Line-Num}{,{Line-Num}{,<Line-Num>}}
+                     | 'RUN' {Line-Num}
+
+
+IO-Statements      ::= 'PRINT' {'@' <Num-Expr> ','} <Print-List> {';' | ','}  
+                     | 'PRINT' {'@' <Num-Expr> ','} USING <Format-Str> ';' <Print-List> 
+                     | 'INPUT' {<Str-Const> ';'} <Variable-list>
+                     | 'LINE' 'INPUT' {<Str-Const> ';'} <Str-Variable>
+                     | 'DATA' <Constant-List>
+                     | 'READ' <Variable-List>
+                     | 'RESTORE' {Line-Num}
+
+
+Program-Stmts      ::= 'DEFDBL' <Alpha-List>           ; Works the same as DEFSNG
+                     | 'DEFINT' <Alpha-List>
+                     | 'DEFSNG' <Alpha-List>
+                     | 'DEFSTR' <Alpha-List>
+                     | 'DIM' <Variable> {'(' <Num-Expr-List> ')'} {',' <Variable> {'(' <Num-Expr-List> ')'} }*
+                     | 'LET' <assignment>
+                     | <assignment>
+
+
+Sequencing-Stmts   ::= 'END
+                     | 'STOP'
+                     | 'GOTO' <Line-expr>
+                     | 'GOSUB' <Line-expr>
+                     | 'RETURN'
+                     | 'ON' <num-expr> { 'GOTO' | 'GOSUB' } <Line-expr> {',' <Line-Expr>}*
+                     | 'ON' 'ERROR' 'GOTO' <Line-Num>
+                     | 'RESUME' {<Line-Num> | 'NEXT' }
+                     | 'FOR' <Loop-Variable> '=' <num-expr> 'TO' <num-expr> {'STEP' <num-expr>}
+                     | 'NEXT' {<Num-Variable> {,<Num-Variable>)* }
+                     | 'REM' {<Printable>}*
+                     | 'IF' <expression> 'THEN' <If-Statements> {'ELSE' <If-Statemnts>}
+                     | 'IF' <expression> 'GOTO' <Line-Expr> {'ELSE' <If-Statements>}
+
+Graphics-Stmts     ::= 'CLS'
+                     | 'PLOT' <Num-expr> ',' <Num-expr> 
+                     | 'UNPLOT' <Num-expr> ',' <Num-expr> 
+
+System-Stmts       ::= 'PAUSE' <Num-Expr>
+
+
+
+
+
+; ----------------- VARIABLES
+
+
+Variable           ::= <Num-Variable>
+                     | <Str-Variable>
+                     | <Untyped-Variable>
+
+Num-Variable       ::= <Int-variable>
+                     | <Float-Var>
+
+Simple-Int-Var     ::= <Identifier '%'>
+
+Int-Variable       ::= <Simple-Int-Var> {'(' <Num-Expr-List> ')' }
+
+Simple-Float-Var   ::= <Identifier '#'>
+
+Float-Var          ::= <Simple-Float-Var> { '(' <Num-Expr-List> ')' }
+
+Simple-Str-Var     ::= <Identifier '$'>
+
+Str-Variable       ::= <Simple-Str-Var> { '(' <Num-Expr-List> ')' } 
+
+Simple-Untyped-Var ::= <Identifier>
+     
+Untyped-Var        ::= <Simple-Untyped-Var> { '(' <Num-Expr-List> ')' }
+
+Identifier         ::= <Alpha> {Alphanumeric}*
+
+Loop_Variable      ::= <Simple-Int-Var> 
+                     | <Simple-Float-Var> 
+                     | <Simple-Untyped-Var>      ; Must resolve to a Simple-Int-Var or Simple-Float-Var
+
+
+
+
+; -------------------- CONSTANTS
+
+
+Constant           ::= <Num-Const>
+                     | <Str-Const>
+
+Num-Const          ::= <Integer> 
+                     | <Float> 
+
+Integer            ::= {Sign} <Digits> 
+
+Sign               ::= <'-' | '+'>
+
+Float              ::= {sign} {Real-Num} {Exponent}
+
+Real-Num           ::= <Digits {'.' {Digit}* }> 
+                     | <'.' Digits>
+
+Exponent           ::= <'e'|'E'> {Sign} <Digits>
+
+Str-Const          ::= '"' {String Chars}* '"' 
+
+
+
+; -------------- LISTS OF ITEMS
+
+                   
+Variable-List      ::= <Variable> {',' <Variable>}* 
+
+Constant-List      ::= <Constant> {',' <Constant>}* 
+                 
+Expression-List    ::= <Expression> {',' <Expression>}* 
+
+Num-Expr-List      ::= <Num-Expr> {',' <Num-Expr>}* 
+
+Expression         ::= <Num-Expr>
+                     | <Str-Expr>
+
+Print-List         ::= <Expression> {<';' | ','> <Expression>}* 
+
+Format-Str         ::= <String-Expr>
+
+If-Statements      ::= <Line-Num> 
+                     | <Statements>
+
+Alpha-List         ::= <Alpha> {',' <Alpha-List>}
+                     | <Alpha> '-' <Alpha> {',' <Alpha-List>}
+
+
+
+; ------------------------------------- Numerical Expressions
+
+Assignment         ::= <Num-Variable> '=' <Num-Expr>
+                     | <Str-Variable> '=' <String-Expr>
+
+Num-Expr           ::= <And-Exp> 'OR' <Num-Expr> 
+                     | <And-Exp> 
+
+And-Exp            ::= <Not-Exp> 'AND' <And-Exp> 
+                     | <Not-Exp> 
+ 
+Not-Exp            ::= 'NOT' <Compare-Exp> 
+                     | <Compare-Exp> 
+
+Compare-Exp        ::= <Add-Exp> '='  <Compare-Exp> 
+                     | <Add-Exp> '<>' <Compare-Exp> 
+                     | <Add-Exp> '>'  <Compare-Exp> 
+                     | <Add-Exp> '>=' <Compare-Exp> 
+                     | <Add-Exp> '<'  <Compare-Exp> 
+                     | <Add-Exp> '<=' <Compare-Exp> 
+                     | <Add-Exp> 
+
+Add-Exp            ::= <Mult-Exp> '+' <Add-Exp> 
+                     | <Mult-Exp> '-' <Add-Exp> 
+                     | <Mult-Exp> 
+
+Mult-Exp           ::= <Negate-Exp> '*' <Mult-Exp> 
+                     | <Negate-Exp> '/' <Mult-Exp> 
+                     | <Negate-Exp> 'MOD' <Mult-Exp> 
+                     | <Negate-Exp> 
+
+Negate-Exp         ::= '-' <Power-Exp> 
+                     | <Power-Exp> 
+
+Power-Exp          ::= <Power-Exp> '^' <Sub-Exp>        
+                     | <Sub-Exp> 
+
+Sub Exp            ::= '(' <Num-Expr> ')'
+                     | <Num-Value>
+
+Num-Value          ::= <Num-Variable> 
+                     | <Num-Const> 
+                     | <Num-Function>
+
+Num-Function       ::= 'ABS'        '(' <Num-Expr> ')'
+                     | 'ASC'        '(' <Str-Expr> ')'
+                     | 'AT'         '(' <Num-Expr> ',' <Num-Expr> ')'
+                     | 'ATN'        '(' <Num-Expr> ')'
+                     | 'CINT'       '(' <Num-Expr> ')'
+                     | 'COS'        '(' <Num-Expr> ')'
+                     | 'ERL'
+                     | 'ERR'
+                     | 'EXTKEY' 
+                     | 'EXP'        '(' <Num-Expr> ')'
+                     | 'FIX'        '(' <Num-Expr> ')'
+                     | 'INT'        '(' <Num-Expr> ')'
+                     | 'LEN'        '(' <Str-Expr> ')'
+                     | 'LOG'        '(' <Num-Expr> ')' 
+                     | 'MEM'
+                     | 'PEEK'       '(' <Num-Expr> ')'
+                     | 'PI'
+                     | 'POINT'      '(' <Num-Expr> ',' <Num-Expr> ')'
+                     | 'POSX'
+                     | 'POSY'
+                     | 'RND'        '(' <Num-Expr> ')'
+                     | 'SGN'        '(' <Num-Expr> ')' 
+                     | 'SIN'        '(' <Num-Expr> ')' 
+                     | 'SPC'        '(' <Expression> ')' 
+                     | 'SQR'        '(' <Num-Expr> ')' 
+                     | 'TAB'        '(' <Num-Expr> ')' 
+                     | 'TAN'        '(' <Num-Expr> ')' 
+                     | 'TIMER'   
+                     | 'VAL'        '(' <Str-Expr> ')' 
+
+
+                     
+
+
+! ----------------------------------------- String Expressions
+
+String-Expr        ::= <Str-Compare>
+
+Str-Compare        ::= <Concat-Expr> '='  <Str-Compare> 
+                     | <Concat-Expr> '<>' <Str-Compare> 
+                     | <Concat-Expr> '>'  <Str-Compare> 
+                     | <Concat-Expr> '>=' <Str-Compare> 
+                     | <Concat-Expr> '<'  <Str-Compare> 
+                     | <Concat-Expr> '<=' <Str-Compare> 
+                     | <Concat-Expr> 
+
+Concat-Expr        ::= <Str-Sub> '+' <Concat-Expr> 
+                     | <Concat-Expr>
+
+Str-Sub            ::= '(' <Str-Expr> ')'
+                     | <Str-Value>
+
+
+Str-Value          ::= <Str-Variable>
+                    | <Str-Const>
+                    | <Str-Function>
+
+Str-Function       ::= 'CHR$'     '(' <Num-Expr> ')'
+                     | 'INKEY$'   '(' <Num-Expr> ')'
+                     | 'LEFT$'    '(' <Str-Expr> ',' <Num-Expr> ')'
+                     | 'MID$'     '(' <Str-Expr> ',' <Num-Expr> ',' <Num-Expr> ')'
+                     | 'RIGHT$'   '(' <Str-Expr> ',' <Num-Expr> ')'
+                     | 'STR$'     '(' <Num-Expr> ')'
+                     | 'STRING$'  '(' <Num-Expr> ',' <Str-Expr> ')' 
+
