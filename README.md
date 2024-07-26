@@ -2,31 +2,13 @@ TRS-8051 BASIC Interpreter Overview
 Version 1.01 (c) 2017 by Dennis Hawkins
 dennis@galliform.com
 
+First and foremost, this is a rewrite of TRS-80 LEVEL 2 BASIC and not an emulation of the actual microsoft binaries.  There is no microsoft code here.
 
-README
+This project started out as a hardware simulation of a TRS-80 Model III running Level 2 BASIC.  The hardware consisted of a single Silicon Labs Laser Bee 8051 CPU and a RAM chip.  The Laser Bee alone literally has about the same power as the original Model I TRS-80.  Using the Laser Bee and a single RAM chip, I was able to generate a stable VGA video signal entirely in software with plenty of CPU cycles left to actually do stuff.
 
-First and foremost, this is a rewrite of TRS-80 LEVEL 2 BASIC and not an emulation of the 
-actual microsoft binaries.  There is no microsoft code here.
+With the hardware working, I turned my attention to developing a BASIC interpreter.  There are numerous interpreters already out there, but they are lacking in functionality.   Many were based on Tiny Basic which is an integer only BASIC with only single letter variables.  So I decided to write my own Level II BASIC complete with full floating point support.  This was easier said than done and after having done it, I have found a great deal of respect for the original author, Bill Gates, who allegedly wrote Level II BASIC in a couple of months.  This project took me about 6 months to complete in my spare time and it still isn't really done.
 
-This project started out as a hardware simulation of a TRS-80 Model III running Level 2 BASIC.  
-The hardware consisted of a single Silicon Labs Laser Bee 8051 CPU and a RAM chip.  The Laser 
-Bee alone literally has about the same power as the original Model I TRS-80.  Using the Laser 
-Bee and a single RAM chip, I was able to generate a stable VGA video signal entirely in 
-software with plenty of CPU cycles left to actually do stuff.
-
-With the hardware working, I turned my attention to developing a BASIC interpreter.  There 
-are numerous interpreters already out there, but they are lacking in functionality.   Many 
-were based on Tiny Basic which is an integer only BASIC with only single letter variables.  
-So I decided to write my own Level II BASIC complete with full floating point support.  This 
-was easier said than done and after having done it, I have found a great deal of respect for 
-the original author, Bill Gates, who allegedly wrote Level II BASIC in a couple of months.  
-This project took me about 6 months to complete in my spare time and it still isn't really 
-done.
-
-Then to add insult to injury, after the project was nearly complete, I stumbled across another 
-TRS-80 Level 2 BASIC interpreter and source called AWBASIC written by Anthony Wood.  He had 
-already written his interpreter back in 2002.  Although not designed for the 8051, had I 
-known about it earlier, it would have shortened my design cycle considerably.
+Then to add insult to injury, after the project was nearly complete, I stumbled across another TRS-80 Level 2 BASIC interpreter and source called AWBASIC written by Anthony Wood.  He had already written his interpreter back in 2002.  Although not designed for the 8051, had I known about it earlier, it would have shortened my design cycle considerably.
 
 When I decided to write this interpreter from scratch, I decided to start out developing it on 
 a Windows platform because the development tools are a lot easier to use than they are for the 
