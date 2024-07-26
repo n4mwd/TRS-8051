@@ -33,7 +33,7 @@ a Windows platform because the development tools are a lot easier to use than th
 8051.  I use a hardware abstraction layer to emulate my TRS-8051 hardware at the source level.  
 That is why this program exists in a Windows version.  
 
-Someone may look at the source and say, ìWow, this is a really stupid way to do itî, but I can 
+Someone may look at the source and say, ‚ÄúWow, this is a really stupid way to do it‚Äù, but I can 
 assure everyone that some odd coding was done deliberately to make the code compile better 
 binaries for the 8051.  On the Laser Bee, there is only 60K of program space and 2K  internal 
 RAM remaining after the Video resources are deducted.  As a result, the code is laced with tons 
