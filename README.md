@@ -3,7 +3,7 @@
 
 Version 1.01 (c) 2017 by Dennis Hawkins (dennis@galliform.com)
 
-First and foremost, this is a rewrite of TRS-80 LEVEL 2 BASIC and not an emulation of the actual microsoft binaries.  There is no microsoft code here.
+First and foremost, **this is a rewrite of TRS-80 LEVEL 2 BASIC** and not an emulation of the actual microsoft binaries.  **There is no microsoft code here.**
 
 This project started out as a hardware simulation of a TRS-80 Model III running Level 2 BASIC.  The hardware consisted of a single Silicon Labs Laser Bee 8051 CPU and a RAM chip.  The Laser Bee alone literally has about the same power as the original Model I TRS-80.  Using the Laser Bee and a single RAM chip, I was able to generate a stable VGA video signal entirely in software with plenty of CPU cycles left to actually do stuff.
 
